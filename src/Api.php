@@ -2,6 +2,7 @@
 
 namespace Telegram\Bot;
 
+use Telegram\Bot\Objects\File;
 use Telegram\Bot\Objects\User;
 use Telegram\Bot\Objects\Update;
 use Telegram\Bot\Objects\Message;
@@ -249,6 +250,7 @@ class Api
         $reply_to_message_id = null,
         $reply_markup = null
     ) {
+        echo "Writing into {$chat_id} in reply to {$reply_to_message_id}: {$text}\n";
         $params = compact('chat_id', 'text', 'disable_web_page_preview', 'reply_to_message_id', 'reply_markup');
         $response = $this->get('sendMessage', $params);
 
@@ -768,6 +770,21 @@ class Api
         ]);
 
         return new Message($response->getDecodedBody());
+    }
+
+    /**
+     * Get a file that has been sent to the bot.
+     *
+     * @param $file_id
+     *
+     * @return File
+     */
+    public function getFile($file_id)
+    {
+        $params = compact('file_id');
+        $response = $this->get('getFile', $params);
+
+        return new File($response->getDecodedBody());
     }
 
     /**
